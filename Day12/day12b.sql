@@ -11,16 +11,12 @@
     select 
       0 round,     
       array['start'] as stack,
-      'start'::text as lst,
-      array[]::text[] as t
+      'start'::text as lst
     union all
     select 
       iter.round + 1,
       array_append(stack, dest),
-      inp.dest,
-
-      (select array_agg(u) from unnest(stack) u
-			where lower(u) = u and u not in ('start', 'end'))
+      inp.dest
     from inp, iter
     where inp.orig = iter.lst 
       and case when inp.dest = 'start' then false
@@ -34,7 +30,6 @@
                    ) 
                    or not exists(select * from unnest(stack) u where u = inp.dest)                   
           end
-
   )
-select count(*), max(round) from iter
+select count(*) from iter
 where lst = 'end'
