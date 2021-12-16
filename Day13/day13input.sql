@@ -39,6 +39,7 @@ begin
 
 fold along y=7
 fold along x=5';
+-- */
 
 	input := replace(input, E'\r', '');
 

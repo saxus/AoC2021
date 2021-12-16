@@ -12,7 +12,8 @@ begin
 	);
 
 	create table if not exists input14insertions (
-               whr text,
+               lft char,
+               rgt char,
                ins char
 	);
 
@@ -35,6 +36,7 @@ BC -> B
 CC -> N
 CN -> C';
 
+
 	input := replace(input, E'\r', '');
 
 	parts := string_to_array(input, E'\n\n');
@@ -43,7 +45,9 @@ CN -> C';
         select parts[1];
 
         insert into input14insertions
-        select t[1], t[2]::char from (
+        select substring(t[1] from 1 for 1)::char, 
+               substring(t[1] from 2 for 1)::char, 
+               t[2]::char from (
           select string_to_array(t, ' -> ') t from regexp_split_to_table(parts[2], E'\n') s(t)
         ) tmp;
 end $$;

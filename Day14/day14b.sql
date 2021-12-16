@@ -35,7 +35,7 @@ with recursive
             cnt as cnt
           from pp
       ) newpairs
-      where iteration < 11
+      where iteration < 41
       group by iteration, lft, rgt      
     )
   ),
